@@ -1,0 +1,87 @@
+/**
+ *  Extended rules
+ */
+
+#content {
+    padding: 30px 0 15px 0;
+}
+
+/**
+ *  New rules
+ */
+
+#text-area {
+    flex: 999 1 600px;
+    margin: 0 20px;
+}
+
+#index-container {
+    max-width: calc(100% - 40px);
+    flex: 1 0 auto;
+    margin: 0 20px;
+    margin-bottom: 20px;    
+}
+
+#index {
+    font-family: 'Asap Condensed', sans-serif;
+    font-size: 20px;
+    min-width: 100%;
+}
+
+#index,
+#index * {
+    max-width: 100%;
+    list-style-type: none;
+}
+
+#index>li ul {
+    display: none;
+}
+
+#index>li>ul>li {
+    padding-left: 20px;
+}
+
+#index>li>ul>li>ul>li {
+    padding-left: 20px;
+}
+
+.show-children>ul {
+    display: block !important;
+}
+
+#index li>div {
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    background: #5E5E5E;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 0 5px 0;
+}
+
+#index a {
+    text-decoration: none;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    background: #5E5E5E;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 0 5px 0;
+    display: block;
+}
+
+#index li>div:first-child:hover {
+    background: #444444;
+}
+
+#index a:hover {
+    background: #444444;
+}
+
+#index .expand-symbol {
+    width: 16px;
+    line-height: 20px;
+}
