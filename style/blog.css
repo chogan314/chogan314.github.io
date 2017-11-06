@@ -15,6 +15,11 @@
     margin: 0 20px;
 }
 
+#text-area #date {
+    margin-top: -16px;
+    font-size: 14px;
+}
+
 #index-container {
     max-width: calc(100% - 40px);
     flex: 1 0 auto;

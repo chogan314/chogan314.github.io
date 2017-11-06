@@ -102,3 +102,28 @@
 .text-container a {
     text-decoration: none;
 }
+
+.text-container ul, ol {
+    margin-left: 40px;
+}
+
+.text-container .insert-image {
+    width: 95%;
+    margin: auto;
+    text-align: center;
+}
+
+.text-container .insert-image img {
+    max-width: 100%;
+}
+
+.text-container .insert-image-caption {
+    margin-top: 6px;
+    font-style: italic;
+}
+
+.text-container code {
+    padding: 10px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+}
