@@ -55,6 +55,7 @@
     margin-top: 10px;
     margin-bottom: 0;
     text-shadow:  rgb(56, 56, 56) 0 0 10px;
+    text-align: center;
 }
 
 #intro>h2 {
@@ -63,6 +64,7 @@
     font-size: 26px;
     margin: 0;
     text-shadow:  rgb(56, 56, 56) 0 0 10px;
+    text-align: center;
 }
 
 #nav-bar {

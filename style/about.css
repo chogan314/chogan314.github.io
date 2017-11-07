@@ -33,11 +33,14 @@
     font-family: 'Oswald', sans-serif;
     font-size: 46px;
     margin-top: 10px;
-    margin-bottom: 0;
+    text-align: center;
+    line-height: 46px;
+    margin-bottom: 10px;
 }
 
 #intro>h2 {
     font-family: 'Roboto', sans-serif;
     font-size: 26px;
     margin: 0;
+    text-align: center;
 }
