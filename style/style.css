@@ -109,7 +109,8 @@
 
 .text-container .insert-image {
     width: 95%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
 
@@ -118,12 +119,29 @@
 }
 
 .text-container .insert-image-caption {
+    max-width: 100%;
     margin-top: 6px;
     font-style: italic;
 }
 
+.text-container .code-container {
+    width: 95%;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: flex;
+}
+
+.text-container pre {
+    width: 100px;
+    flex: 1 1 auto;
+}
+
 .text-container code {
-    padding: 10px;
-    font-family: Consolas, Monaco, monospace;
+    text-align: left;
+    max-width: 100%;
     font-size: 14px;
+    font-family: Consolas, Monaco, monospace;
+    max-width: 100%;
 }
