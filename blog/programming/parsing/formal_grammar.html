@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/blog.css">
+    <link href="https://fonts.googleapis.com/css?family=Asap+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+	<link rel="stylesheet" href="/style/atom-one-dark.css">
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <title>Formal Grammar</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="nav-bar">
+            <div id="nav-bar-filler-left"></div>
+            <div id="nav-menu-container">
+                <a href="/about.html" class="menu-item">About</a>
+                <a href="/projects.html" class="menu-item">Projects</a>
+                <a href="/blog.html" class="menu-item">Blog</a>
+                <a href="/contact.html" class="menu-item">Contact</a>
+            </div>
+            <div id="nav-bar-filler-right"></div>
+        </div>
+        <div id="content-container">
+            <div id="content">
+                <div id="text-area" class="text-container">
+                    <h1>Formal Grammar</h1>
+<div id="date">Last edited: 2017-12-31</div>
+<p>Let's look at an example input for our calculator:</p>
+<div class="code-container"><pre><code class="c++">9
+a = 4
+a - 2.27
+4 / 2
+b = a * 6
+4 / 2 + 6</code></pre></div>
+<p>and its output:</p>
+<div class="code-container"><pre><code class="c++">9
+4
+1.73
+2
+24
+8</code></pre></div>
+<p>As you can see, each line is evaluated in turn and has its solution printed (more on this later). Let's start breaking down what can make up a line.</p>
+<h2>Defining the Pieces</h2>
+<p>Let's call the entire block of input to our calculator a "program" (prog). The entire code snippet above is one program. The program is composed of any number of "statements" (stmnt). A statement is an "expression" (E) terminated by an end of line (eol) character. This means that the input snippet above is a potential expansion of any of the following sets of rules:</p>
+<div class="code-container"><pre><code class="c++">prog</code></pre></div>
+<div class="code-container"><pre><code class="c++">stmnt
+stmnt
+stmnt
+stmnt
+stmnt
+stmnt</code></pre></div>
+<div class="code-container"><pre><code class="c++">E eol
+E eol
+E eol
+E eol
+E eol
+E eol</code></pre></div>
+<p>This is all well and good, but leaves an important question unanswered. What is an expression? This is where things get complex. In the example, we can see that 4 / 2 is an expression. We can also see that 4 / 2 + 6 is an expression. This means that an expression can contain an expression. A simple translation like stmnt = E eol will not do in this situation.</p>
+<h2>Terminal and Nonterminal Symbols</h2>
+<p>From the above section, prog, stmnt, E, and eol are symbols. prog, stmnt, and E are <i>nonterminal</i> symbols because they can be constructed from other symbols. eol is a terminal symbol because it can't be constructed from other symbols. We should identify all of the terminal symbols in our calculator's grammar:</p>
+<div class="code-container"><pre><code class="c++">eol == End of line character
+var == Variable. Matched by the regex [a-zA-Z_][a-zA-Z0-9_]*
+lit == Literal. Matched by the regex [0-9]*\.?[0-9]+
+=   == Assignment operator.
++   == Addition operator.
+-   == Subtraction operator.
+-   == Negation operator. The character '-', but only in certain situations.
+*   == Multiplication operator.
+/   == Division operator.
+(   == Open parenthesis.
+)   == Close parenthesis.</code></pre></div>
+<p>And a useful non-terminal symbol:</p>
+<div class="code-container"><pre><code class="c++">value -&gt; var
+       | lit</code></pre></div>
+<p>The notation above implies that the value symbol can be replaced by either a var symbol or a lit symbol.</p>
+<h2>Defining Expressions</h2>
+<p>Let's look at few expressions that contain the addition operation:</p>
+<div class="code-container"><pre><code class="c++">// A value can be on the left hand side (lhs) and right hand side (rhs) of an addition operation
+value + value
+
+// A value can be on the lhs and another addition expression can be on the rhs
+value + value + value
+
+// A value can be on the lhs and another expression on the rhs
+value + value * value
+
+// Another expression can be on the lhs and a value can be on the rhs
+value - value + value
+
+// Expression can be on both sides of the addition expression
+value / value add value * value</code></pre></div>
+<p>This is a lot of permutations. We can simplify this by adding our first expression definition:</p>
+<div class="code-container"><pre><code class="c++">E -&gt; value</code></pre></div>
+<p>We define a value as an expression. This way the examples above can be described as simply E + E. Let's add this to our expression definition. Let's also add formal rules for all of the other operations in our language</p>
+<div class="code-container"><pre><code class="c++">E -&gt; value
+   | E + E
+   | E - E
+   | E * E
+   | E / E
+   | -E</code></pre></div>
+<p>We need a rule to allow expressions to be enclosed in parentheses:</p>
+<div class="code-container"><pre><code class="c++">E -&gt; value
+   | E + E
+   | E - E
+   | E * E
+   | E / E
+   | -E
+   | (E)</code></pre></div>
+<p>Finally we need a rule for assignment. Assignment is somewhat special because the left hand side can only be a variable:</p>
+<div class="code-container"><pre><code class="c++">E -&gt; value
+   | E + E
+   | E - E
+   | E * E
+   | E / E
+   | -E
+   | (E)
+   | var = E</code></pre></div>
+
+                </div>
+                <div id="index-container">
+					<ul id="index">
+						<li><div>Miscellaneous</div>
+<ul>
+<li><a href="/blog/miscellaneous/the_first_post.html">The First Post</a></li>
+</ul>
+</li>
+<li><div>Programming</div>
+<ul>
+<li><div>Parsing</div>
+<ul>
+<li><a href="/blog/programming/parsing/a_simple_calculator.html">A Simple Calculator</a></li>
+<li><a href="/blog/programming/parsing/formal_grammar.html">Formal Grammar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+					</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

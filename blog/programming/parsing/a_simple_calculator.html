@@ -12,11 +12,9 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
-    <link rel="stylesheet" href="/style/atom-one-dark.css">
+	<link rel="stylesheet" href="/style/atom-one-dark.css">
     <script src="/js/highlight.pack.js"></script>
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <title>A Simple Calculator</title>
 </head>
 
@@ -36,110 +34,74 @@
             <div id="content">
                 <div id="text-area" class="text-container">
                     <h1>A Simple Calculator</h1>
-                    <div id="date">Last edited: 2017-11-28</div>
-                    <p>In this series of posts, we're going to explore the concept of parsing by creating a simple calculator
-                        in Python. Our calculator will have these features:</p>
-                    <ol>
-                        <li>Variables and assignment</li>
-                        <li>Numeric literals</li>
-                        <li>Addition</li>
-                        <li>Subtraction</li>
-                        <li>Negation</li>
-                        <li>Multiplication</li>
-                        <li>Division</li>
-                        <li>Normal order of operations, including parentheses</li>
-                    </ol>
+<div id="date">Last edited: 2017-11-28</div>
+<p>In this series of posts, we're going to explore the concept of parsing by creating a simple calculator in Python. Our calculator will have these features:</p>
+<ol>
+<li>Variables and assignment</li>
+<li>Numeric literals</li>
+<li>Addition</li>
+<li>Subtraction</li>
+<li>Negation</li>
+<li>Multiplication</li>
+<li>Division</li>
+<li>Normal order of operations, including parentheses</li>
+</ol>
 
-                    <p>Here's an example of what input to our calculator might look like:</p>
-                    <div class="code-container">
-                        <pre><code class="c++">6 / 3
+<p>Here's an example of what input to our calculator might look like:</p>
+<div class="code-container"><pre><code class="c++">6 / 3
 2 * 8 + 5.102
 a = 4
 a - 2.27
-b = a * (3 + 1)</code></pre>
-                    </div>
-                    <h2>On Languages</h2>
-                    <p>According to
-                        <a href="https://en.wikipedia.org/wiki/Formal_language">Wikipedia</a>, a formal language is "is a set of strings of symbols together with a set of rules
-                        that are specific to it". Take a look at the example of calculator input. The reason that you're
-                        able to understand what each sequence of symbols implies is because you have an understanding of
-                        elementary algebra and the syntactic rules it entails. Our calculator has no such knowledge. In order
-                        for it to understand the series of characters that is its input, rules must exist that describe how
-                        to break apart that raw input into processable pieces. Before anything else can be done, we need
-                        to define the rules for our calculator's language.</p>
-                    <h2>Regular Expressions</h2>
-                    <p>Regular expressions are, to quote
-                        <a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia</a>, "sequences of characters that define a search pattern". Basically, a regex of "ab"
-                        will match every "ab" in some string. Regular expressions also have some special characters that
-                        allow for more dynamic pattern matching. We're going to use regular expressions to define some syntax
-                        of our calculator's language. Here's a brief run down of some special characters we'll be using:</p>
-                    <ul>
-                        <li>[] matches any single character contained within itself. For example, [abc] matches a, b, or c.</li>
-                        <li>[x-y] matches any single character in the logical range of x to y (inclusive). [a-c] is equivalent
-                            to [abc].</li>
-                        <li>Both ranges and single characters can be included in a single []. [abd-g]</li>
-                    </ul>
+b = a * (3 + 1)</code></pre></div>
+<h2>On Languages</h2>
+<p>According to <a href="https://en.wikipedia.org/wiki/Formal_language">Wikipedia</a>, a formal language is "is a set of strings of symbols together with a set of rules that are specific to it". Take a look at the example of calculator input. The reason that you're able to understand what each sequence of symbols implies is because you have an understanding of elementary algebra and the syntactic rules it entails. Our calculator has no such knowledge. In order for it to understand the series of characters that is its input, rules must exist that describe how to break apart that raw input into processable pieces. Before anything else can be done, we need to define the rules for our calculator's language.</p>
+<h2>Regular Expressions</h2>
+<p>Regular expressions are, to quote <a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia</a>, "sequences of characters that define a search pattern". Basically, a regex of "ab" will match every "ab" in some string. Regular expressions also have some special characters that allow for more dynamic pattern matching. We're going to use regular expressions to define some syntax of our calculator's language. Here's a brief run down of some special characters we'll be using:</p>
+<ul>
+<li>[] matches any single character contained within itself. For example, [abc] matches a, b, or c.</li>
+<li>[x-y] matches any single character in the logical range of x to y (inclusive). [a-c] is equivalent to [abc].</li>
+<li>Both ranges and single characters can be included in a single []. [abd-g]</li>
+</ul>
 
-                    <p>Quantifiers specify how many copies of the preceding character or construct are allowed in a match:</p>
-                    <ul>
-                        <li>? matches 0 or 1 occurrences. "tes?t" matches "tet" and "test"</li>
-                        <li>* matches 0 or more occurrences. "tes*t" matches "tet", "test", "tesst", ...</li>
-                        <li>+ matches 1 or more occurrences. "tes+t" matches "test", "tesst", "tessst", ...</li>
-                    </ul>
+<p>Quantifiers specify how many copies of the preceding character or construct are allowed in a match:</p>
+<ul>
+<li>? matches 0 or 1 occurrences. "tes?t" matches "tet" and "test"</li>
+<li>* matches 0 or more occurrences. "tes*t" matches "tet", "test", "tesst", ...</li>
+<li>+ matches 1 or more occurrences. "tes+t" matches "test", "tesst", "tessst", ...</li>
+</ul>
 
-                    <h2>Variables</h2>
-                    <p>Our variables will begin with a letter or underscore. Any character past the first can be a letter, number,
-                        or underscore. The regex "[a-zA-Z_]" creates the rule for the first character. The regex "[a-zA-Z0-9_]"
-                        creates the rule for any character past the first. Because we can have any number of characters past
-                        the first (including zero), the * quantifier should be used. The full regex becomes "[a-zA-Z_][a-zA-Z0-9_]*".</p>
-                    <h2>Literals</h2>
-                    <p>Our numeric literals will begin with zero or more numeric characters followed by zero or one periods
-                        followed by one or more numeric characters. The regex looks like "[0-9]*\.?[0-9]+". The period is
-                        usually a special character, so it needs to be escaped. Having the required numeral after the (optional)
-                        decimal point rather than before prevents structures like "9." and allows for decimals without a
-                        leading 0 like ".98".</p>
-                    <h2>Operations</h2>
-                    <p>Let's take a look at a simple addition operation:</p>
-                    <div class="code-container">
-                        <pre><code class="c++">2 + 3</code></pre>
-                    </div>
-                    <p>We have a literal followed by an addition symbol followed by another literal. A regex that matches this
-                        statement would look something like "[0-9]*\.?[0-9]+\+[0-9]*\.?[0-9]+". However, our addition operation
-                        works with more than just literals.</p>
-                    <div class="code-container">
-                        <pre><code class="c++">variable + 3
-8 * 2 + 3</code></pre>
-                    </div>
-                    <p>Both of these statements are valid in our language. How do we define rules that account for all possible
-                        use cases of the addition operator? Regular expressions are not the best tools for the job in this
-                        situation. In the next post, we'll see how using formal grammar can solve this problem.</p>
+<h2>Variables</h2>
+<p>Our variables will begin with a letter or underscore. Any character past the first can be a letter, number, or underscore. The regex "[a-zA-Z_]" creates the rule for the first character. The regex "[a-zA-Z0-9_]" creates the rule for any character past the first. Because we can have any number of characters past the first (including zero), the * quantifier should be used. The full regex becomes "[a-zA-Z_][a-zA-Z0-9_]*".</p>
+<h2>Literals</h2>
+<p>Our numeric literals will begin with zero or more numeric characters followed by zero or one periods followed by one or more numeric characters. The regex looks like "[0-9]*\.?[0-9]+". The period is usually a special character, so it needs to be escaped. Having the required numeral after the (optional) decimal point rather than before prevents structures like "9." and allows for decimals without a leading 0 like ".98".</p>
+<h2>Operations</h2>
+<p>Let's take a look at a simple addition operation:</p>
+<div class="code-container"><pre><code class="c++">2 + 3</code></pre></div>
+<p>We have a literal followed by an addition symbol followed by another literal. A regex that matches this statement would look something like "[0-9]*\.?[0-9]+\+[0-9]*\.?[0-9]+". However, our addition operation works with more than just literals.</p>
+<div class="code-container"><pre><code class="c++">variable + 3
+8 * 2 + 3</code></pre></div>
+<p>Both of these statements are valid in our language. How do we define rules that account for all possible use cases of the addition operator? Regular expressions are not the best tools for the job in this situation. In the next post, we'll see how using formal grammar can solve this problem.</p>
 
                 </div>
                 <div id="index-container">
-                    <ul id="index">
-                        <li>
-                            <div>Miscellaneous</div>
-                            <ul>
-                                <li>
-                                    <a href="/blog/miscellaneous/the_first_post.html">The First Post</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div>Programming</div>
-                            <ul>
-                                <li>
-                                    <div>Parsing</div>
-                                    <ul>
-                                        <li>
-                                            <a href="/blog/programming/parsing/a_simple_calculator.html">A Simple Calculator</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+					<ul id="index">
+						<li><div>Miscellaneous</div>
+<ul>
+<li><a href="/blog/miscellaneous/the_first_post.html">The First Post</a></li>
+</ul>
+</li>
+<li><div>Programming</div>
+<ul>
+<li><div>Parsing</div>
+<ul>
+<li><a href="/blog/programming/parsing/a_simple_calculator.html">A Simple Calculator</a></li>
+<li><a href="/blog/programming/parsing/formal_grammar.html">Formal Grammar</a></li>
+</ul>
+</li>
+</ul>
+</li>
 
-                    </ul>
+					</ul>
                 </div>
             </div>
         </div>
